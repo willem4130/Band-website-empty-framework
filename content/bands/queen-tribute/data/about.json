@@ -1,0 +1,27 @@
+{
+  "title": "About Us",
+  "descriptions": {
+    "short": "[Brief one-line description for hero sections]",
+    "medium": "[Medium description for about preview - 2-3 sentences]",
+    "long": "[Full description for about page - multiple paragraphs]"
+  },
+  "story": {
+    "founding": "[How the band started]",
+    "mission": "[What drives the band]",
+    "vision": "[Where the band is heading]"
+  },
+  "members": [
+    {
+      "name": "[Member Name]",
+      "role": "Lead Vocals",
+      "bio": "[Brief member bio]",
+      "image": "/content/bands/queen-tribute/assets/members/member1.jpg"
+    }
+  ],
+  "achievements": [
+    {
+      "year": "2024",
+      "achievement": "[Notable achievement]"
+    }
+  ]
+}
