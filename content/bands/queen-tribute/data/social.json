@@ -1,0 +1,44 @@
+{
+  "platforms": {
+    "facebook": {
+      "url": "https://facebook.com/[your-band]",
+      "handle": "@[your-band]",
+      "active": true
+    },
+    "instagram": {
+      "url": "https://instagram.com/[your-band]",
+      "handle": "@[your-band]",
+      "active": true
+    },
+    "twitter": {
+      "url": "https://twitter.com/[your-band]",
+      "handle": "@[your-band]",
+      "active": true
+    },
+    "youtube": {
+      "url": "https://youtube.com/@[your-band]",
+      "channelId": "[channel-id]",
+      "active": true
+    },
+    "spotify": {
+      "url": "https://open.spotify.com/artist/[artist-id]",
+      "artistId": "[artist-id]",
+      "active": false
+    },
+    "bandcamp": {
+      "url": "https://[your-band].bandcamp.com",
+      "active": false
+    },
+    "tiktok": {
+      "url": "https://tiktok.com/@[your-band]",
+      "handle": "@[your-band]",
+      "active": false
+    }
+  },
+  "preferredOrder": ["youtube", "instagram", "facebook", "twitter"],
+  "displaySettings": {
+    "showInHeader": true,
+    "showInFooter": true,
+    "showInContact": true
+  }
+}
