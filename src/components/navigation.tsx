@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Menu, X, Facebook, Instagram, Mail } from 'lucide-react'
+import { useBandContent } from '@/hooks/useConfig'
 
 const navigation = [
   { name: 'About', href: '#about' },
@@ -11,6 +12,7 @@ const navigation = [
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const content = useBandContent()
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
@@ -30,7 +32,7 @@ export function Navigation() {
               onClick={(e) => handleClick(e, '#home')}
               className="text-2xl font-semibold tracking-wide text-white/90 uppercase"
             >
-              Soft Mad Children
+              {content.bandName}
             </a>
           </div>
 
@@ -53,7 +55,7 @@ export function Navigation() {
           {/* Social Icons - Far Right Desktop */}
           <div className="hidden md:flex items-center space-x-4">
             <a
-              href="https://www.facebook.com/SoftMadChildren"
+              href={content.social.facebook || '#'}
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/80 hover:text-white transition-all duration-500 p-2 rounded-lg hover:bg-amber-900/20 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-amber-900/20"
@@ -67,7 +69,7 @@ export function Navigation() {
               <Instagram className="h-6 w-6" />
             </a>
             <a
-              href="mailto:contact@softmadchildren.com"
+              href={`mailto:${content.contact.email}`}
               className="text-white/80 hover:text-white transition-all duration-500 p-2 rounded-lg hover:bg-amber-900/20 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-amber-900/20"
             >
               <Mail className="h-6 w-6" />
@@ -109,7 +111,7 @@ export function Navigation() {
             {/* Mobile Social Icons */}
             <div className="flex items-center justify-center space-x-6 pt-4 border-t border-white/10">
               <a
-                href="https://www.facebook.com/SoftMadChildren"
+                href={content.social.facebook || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/80 hover:text-white transition-all duration-500 p-2 rounded-lg hover:bg-amber-900/20 hover:backdrop-blur-sm"
@@ -123,7 +125,7 @@ export function Navigation() {
                 <Instagram className="h-7 w-7" />
               </a>
               <a
-                href="mailto:contact@softmadchildren.com"
+                href={`mailto:${content.contact.email}`}
                 className="text-white/80 hover:text-white transition-all duration-500 p-2 rounded-lg hover:bg-amber-900/20 hover:backdrop-blur-sm"
               >
                 <Mail className="h-7 w-7" />

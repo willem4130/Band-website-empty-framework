@@ -5,10 +5,18 @@ import { ChevronDown, Facebook, X, ChevronLeft, ChevronRight } from 'lucide-reac
 import Image from 'next/image'
 import { useState } from 'react'
 import VideoBackground from '@/components/VideoBackground'
+import { useBandContent, useMediaPaths, useConfiguredClasses, useAnimationClasses, useAnimationSettings } from '@/hooks/useConfig'
 
 export default function Home() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
+
+  // Configuration hooks
+  const content = useBandContent()
+  const media = useMediaPaths()
+  const classes = useConfiguredClasses()
+  const animationClasses = useAnimationClasses()
+  const animationSettings = useAnimationSettings()
 
   const handleImageClick = (image: string, index: number) => {
     setSelectedImage(`/gallery/${image}`)
@@ -28,13 +36,8 @@ export default function Home() {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
   }
   
-  // Gallery images - actual files in gallery directory
-  const galleryImages = [
-    'soft-mad-children-band.jpg',
-    'willem4130_a_car_driving_of_in_the_USA_sunset_style_of_the_Do_38eebbe1-559a-4582-ba99-66e24b290910_3.jpg',
-    'willem4130_Abstract_picture_of_a_the_doors_tribute_band_perfo_0f9aeda4-d2fa-44ee-b72d-f46843b88ebc_2.jpg',
-    'willem4130_jim_morisson_--profile_wqdhksx_--v_7_cf48b529-0bcd-4e05-93ab-0532aafdf9c8_3.jpg'
-  ]
+  // Gallery images from configuration
+  const galleryImages = media.gallery.map(path => path.replace('/gallery/', ''))
 
   return (
     <div className="bg-black">
@@ -46,7 +49,7 @@ export default function Home() {
           <motion.div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat parallax-back"
             style={{
-              backgroundImage: 'url(/forest-scene.jpg)',
+              backgroundImage: `url(${media.hero.background})`,
               backgroundSize: '120%',
             }}
             initial={{ scale: 1 }}
@@ -249,21 +252,21 @@ export default function Home() {
               scale: { duration: 1.2, ease: "easeInOut" }
             }}
           >
-            <motion.h1 
-              className="text-6xl md:text-8xl font-bold tracking-widest text-white uppercase mb-8" 
-              style={{ 
+            <motion.h1
+              className="text-6xl md:text-8xl font-bold tracking-widest text-white uppercase mb-8"
+              style={{
                 textShadow: '0 3px 6px rgba(0, 0, 0, 0.95), 0 6px 12px rgba(0, 0, 0, 0.8), 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 0, 0, 0.8)',
                 WebkitTextStroke: '0.5px rgba(255, 255, 255, 0.2)'
               }}
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ 
-                duration: 2, 
+              transition={{
+                duration: 2,
                 delay: 1,
                 ease: [0.43, 0.13, 0.23, 0.96]
               }}
             >
-              Soft Mad Children
+              {content.bandName}
             </motion.h1>
             <motion.p 
               className="text-white text-lg font-medium tracking-wider uppercase" 
@@ -279,37 +282,7 @@ export default function Home() {
                 ease: [0.25, 0.1, 0.25, 1]
               }}
             >
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 2.5 }}
-              >
-                Lost
-              </motion.span>
-              {' '}
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 2.7 }}
-              >
-                in the
-              </motion.span>
-              {' '}
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 2.9 }}
-              >
-                Forest
-              </motion.span>
-              {' '}
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 3.1 }}
-              >
-                of Sound
-              </motion.span>
+              {content.tagline}
             </motion.p>
           </motion.div>
           
@@ -371,16 +344,7 @@ export default function Home() {
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.9), 0 4px 8px rgba(0, 0, 0, 0.7)'
             }}>
               <p>
-                Soft Mad Children unlocks a gateway into the timeless realm of The Doors. We don&apos;t just perform their music: we craft a living ceremony where sound, visuals and Jim Morrison&apos;s poetic spirit come together.
-              </p>
-              <p>
-                Each show is an immersive ritual: blending raw energy, cinematic projections and a charismatic frontman who channels the band&apos;s mystique. Backed by a lineup of musicians who mirror The Doors&apos; original synergy, capturing the subtle interplay, tension and release that defined their sound, Soft Mad Children offers more than a tribute. We deliver an experience that feels both authentically vintage and vibrantly alive.
-              </p>
-              <p>
-                Here, you aren&apos;t just watching: you&apos;re part of the experience, transcending the ordinary and stepping into a world where The Doors&apos; legacy is reborn with every note.
-              </p>
-              <p className="italic text-xl">
-                The ceremony awaits…. Is everybody in?
+                {content.description.long}
               </p>
             </div>
           </motion.div>

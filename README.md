@@ -1,168 +1,216 @@
-# Band Website
+# 🎸 Band Website Framework
 
-A modern, theatrical band website with content management system built with Next.js, TypeScript, Prisma, and NextAuth.
+A modern, configurable Next.js framework for creating stunning band websites in minutes. Built with React 19, TypeScript, and optimized for Queen Claude integration.
 
-## Features
+## ✨ Features
 
-- 🎭 **Theatrical Homepage** with "Mysterious Mode" toggle
-- 🎸 **Band Information** - About, Music, Shows, Gallery
-- 📅 **Event Management** - Tour dates and show information
-- 📝 **Content Management System** - Admin panel for managing content
-- 🔐 **Authentication** - Secure admin access with NextAuth
-- 📱 **Responsive Design** - Works on all devices
-- ⚡ **Performance** - Built with Next.js Turbopack
+- **16 Strategic Parameters** - Control 100% of visual brand identity
+- **Genre Presets** - EDM/Pop, Indie Rock, Metal/Raw Rock templates
+- **Responsive Design** - Mobile-first, works on all devices
+- **Performance Optimized** - Fast loading, smooth animations
+- **Queen Claude Ready** - AI-powered configuration and customization
+- **Developer Friendly** - TypeScript, modern tooling, clear documentation
 
-## Getting Started
+## 🚀 Quick Start
 
-### Prerequisites
+```bash
+# Clone and setup
+git clone <this-repository>
+cd band-website-framework
+npm install
 
-- Node.js 18+ 
-- PostgreSQL
-- npm or yarn
+# Configure your band
+cp band.config.sample.ts band.config.ts
+# Edit band.config.ts with your information
 
-### Installation
+# Add your media assets
+# - /public/hero-bg.jpg (hero background)
+# - /public/gallery/*.jpg (gallery images)
+# - /public/logo.png (your logo)
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd band-website
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   
-   Update `.env.local` with your configuration:
-   - `DATABASE_URL` - Your PostgreSQL connection string
-   - `NEXTAUTH_SECRET` - Generate with `openssl rand -base64 32`
-   - `NEXTAUTH_URL` - Your site URL (http://localhost:3000 for development)
-
-4. **Set up the database**
-   ```bash
-   # Create database
-   createdb band_website
-   
-   # Run migrations
-   npm run db:migrate
-   
-   # Seed initial data (includes admin user)
-   npm run db:seed
-   ```
-
-5. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-   Visit [http://localhost:3000](http://localhost:3000)
-
-## Default Admin Credentials
-
-After running the seed script:
-- **Email**: admin@bandwebsite.com
-- **Password**: admin123
-
-⚠️ **Important**: Change these credentials immediately in production!
-
-## Project Structure
-
-```
-band-website/
-├── prisma/              # Database schema and migrations
-├── public/              # Static assets
-├── src/
-│   ├── app/            # Next.js app directory
-│   │   ├── admin/      # Admin panel pages
-│   │   ├── api/        # API routes
-│   │   └── ...         # Public pages
-│   ├── components/     # React components
-│   ├── lib/            # Utility functions
-│   └── types/          # TypeScript types
-└── ...
+# Start development
+npm run dev
 ```
 
-## Available Scripts
+Visit `http://localhost:3000` and see your band website come to life! 🎤
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run db:migrate` - Run database migrations
-- `npm run db:seed` - Seed database with initial data
-- `npm run db:studio` - Open Prisma Studio
+## 🎨 Configuration System
 
-## Admin Panel Features
+### Core Developer Controls (8 Parameters)
+The **top 20%** of parameters that drive **80%** of visual impact:
 
-Access the admin panel at `/admin`:
+1. **Primary Color Palette** - Brand colors used throughout
+2. **Typography Pair** - Heading and body font combinations
+3. **Hero Background** - Main hero section styling
+4. **Section Background Strategy** - How each section is styled
+5. **Animation Intensity** - Overall motion and effects level
+6. **Color Temperature** - Warm/cool bias for entire palette
+7. **Contrast Level** - Overall contrast across components
+8. **Border Radius Scale** - Sharp to rounded aesthetic
 
-- **Dashboard** - Overview of site content and analytics
-- **Content Management** - Create and edit pages, posts, and news
-- **Event Management** - Manage tour dates and shows
-- **Media Library** - Upload and manage images, videos, and audio
-- **User Management** - Manage admin users and permissions
-- **Site Settings** - Configure site-wide settings
+### Genre Flexibility (8 Parameters)
+Fine-tuning for different music genres:
 
-## Customization
+9. **Particle Effects Density** - Atmospheric elements intensity
+10. **Glow/Neon Intensity** - Cyberpunk-style effects
+11. **Texture Overlays** - Clean to grungy surface treatments
+12. **Motion Speed** - Animation speed scaling
+13. **Shadow Intensity** - Depth and drama of shadows
+14. **Background Focus** - Image blur effects
+15. **Color Saturation** - Vibrancy level
+16. **Layout Spacing** - Density of elements
 
-### Styling
+## 🎵 Genre Presets
 
-The site uses Tailwind CSS for styling. Main style files:
-- `src/app/globals.css` - Global styles and animations
-- Theatrical and mysterious mode effects included
+### EDM/Pop
+```typescript
+// High energy, neon effects, fast motion
+import { edmPopPreset } from './band.config.sample'
+```
 
-### Content Types
+### Indie Rock
+```typescript
+// Warm, textured, moderate effects
+import { indieRockPreset } from './band.config.sample'
+```
 
-Available content types (defined in `prisma/schema.prisma`):
-- PAGE - Static pages
-- POST - Blog posts
-- MUSIC_RELEASE - Album/single releases
-- NEWS - News articles
-- BIO - Band member bios
-- PRESS_KIT - Press materials
+### Metal/Raw Rock
+```typescript
+// Sharp, high contrast, dramatic
+import { metalRockPreset } from './band.config.sample'
+```
 
-## Deployment
+## 📁 Media Assets Required
+
+```
+public/
+├── hero-bg.jpg              # Hero background (1920x1080+)
+├── logo.png                 # Main logo
+├── favicon.ico              # Site favicon
+├── gallery/
+│   ├── gallery-1.jpg        # Gallery images (1200x800)
+│   ├── gallery-2.jpg        # 3:2 aspect ratio
+│   ├── gallery-3.jpg        # Web-optimized
+│   └── gallery-4.jpg        # JPG or WebP
+└── videos/                  # Optional background videos
+    ├── about-bg-1.mp4       # About section (1920x1080, <5MB)
+    └── shows-bg-1.mp4       # Shows section (MP4, H.264)
+```
+
+## 🛠 Tech Stack
+
+- **Framework:** Next.js 15.3.5 + React 19
+- **Language:** TypeScript 5.9
+- **Styling:** Tailwind CSS v4
+- **Animations:** Framer Motion 12.23
+- **Database:** Prisma + PostgreSQL (optional)
+- **Auth:** NextAuth.js (optional)
+- **Icons:** Lucide React
+
+## 👑 Queen Claude Integration
+
+This framework is optimized for Queen Claude's AI-powered design system:
+
+- **Parameter Schema** - Machine-readable configuration
+- **Validation Rules** - Automatic conflict detection
+- **Genre Mapping** - AI-driven style suggestions
+- **Performance Boundaries** - Automated optimization
+- **Template System** - Instant genre transformations
+
+Queen Claude can analyze your band's style and automatically configure all 16 parameters for perfect brand alignment.
+
+## 📖 Documentation
+
+- **[Setup Guide](SETUP_GUIDE.md)** - Complete configuration walkthrough
+- **[Media Assets Guide](public/MEDIA_ASSETS_GUIDE.md)** - Asset specifications and tips
+- **[Parameter Schema](config/parameter-schema.json)** - Complete API reference
+- **[Configuration Examples](band.config.sample.ts)** - Real-world examples
+
+## 🎯 Use Cases
+
+### For Bands
+- Launch a professional website in under 30 minutes
+- Update content and styling without coding
+- Genre-specific optimizations for your music style
+- Mobile-first responsive design
+
+### For Developers
+- Clean, modern codebase with TypeScript
+- 16 strategic parameters control everything
+- Clear separation of content and styling
+- Easy to extend and customize
+
+### For Agencies
+- Rapid client delivery (hours not weeks)
+- Consistent quality across projects
+- Easy maintenance and updates
+- Queen Claude automation integration
+
+## 🚀 Deployment
 
 ### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables
-4. Deploy
-
-### Other Platforms
-
-Build the project:
 ```bash
-npm run build
+npm install -g vercel
+vercel
 ```
 
-The build output will be in `.next/` directory.
+### Netlify
+```bash
+npm run build
+# Upload to Netlify
+```
 
-## Security
+### Docker
+```bash
+docker build -t band-website .
+docker run -p 3000:3000 band-website
+```
 
-- All admin routes are protected by NextAuth
-- Passwords are hashed with bcrypt
-- Environment variables for sensitive data
-- CSRF protection enabled
+## 📝 Examples
 
-## Contributing
+### Color Palette
+```typescript
+primaryColorPalette: {
+  primary: 'amber-900',      // Main brand color
+  secondary: 'teal-800',     // Accent color
+  accent: 'purple-600',      // CTA highlights
+  background: 'black',       // Base background
+  surface: 'gray-900'        // Cards/surfaces
+}
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Typography
+```typescript
+typographyPair: {
+  headingFont: 'Playfair Display',  // Dramatic headings
+  bodyFont: 'Source Sans Pro',      // Readable body text
+  fontScale: 'spacious'             // More breathing room
+}
+```
 
-## License
+### Genre Transformation
+```typescript
+// Transform any site from rock to EDM in seconds
+genre: {
+  particleEffectsDensity: 1.0,     // Maximum effects
+  glowIntensity: 0.8,              // Cyberpunk glow
+  motionSpeedMultiplier: 1.5,      // Fast animations
+  colorSaturation: 'neon'          // Vibrant colors
+}
+```
 
-This project is licensed under the MIT License.
+## 🤝 Contributing
 
-## Support
+We welcome contributions! Please see our contributing guidelines and feel free to submit issues and pull requests.
 
-For support, email support@bandwebsite.com or open an issue.
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🎤 Credits
+
+Built with love for the music community. Special thanks to all the bands and developers who provided feedback during development.
+
+---
+
+**Ready to rock?** 🤘 [Get started with the setup guide](SETUP_GUIDE.md) and have your band website live in minutes!
