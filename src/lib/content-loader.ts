@@ -20,7 +20,7 @@ import type {
 } from '@/types/content'
 
 // Default configuration
-const DEFAULT_BAND_ID = 'queen-tribute'
+const DEFAULT_BAND_ID = 'template-band'
 const CONTENT_BASE_PATH = '/content/bands'
 
 /**

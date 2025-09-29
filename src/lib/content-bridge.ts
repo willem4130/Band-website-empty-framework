@@ -13,7 +13,7 @@ import type { BandContent } from '@/types/content'
 /**
  * Check if new content system has data
  */
-async function hasNewContent(bandId: string = 'queen-tribute'): Promise<boolean> {
+async function hasNewContent(bandId: string = 'template-band'): Promise<boolean> {
   try {
     return await contentExists(bandId)
   } catch {

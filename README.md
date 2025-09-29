@@ -1,45 +1,93 @@
-# 🎸 Band Website Framework
+# 🎸 Band Website Boilerplate
 
-A modern, configurable Next.js framework for creating stunning band websites in minutes. Built with React 19, TypeScript, and optimized for Queen Claude integration.
+A modern, performant band website boilerplate built with Next.js 15, TypeScript, and Tailwind CSS. Features a flexible content management system ready for headless CMS integration.
 
 ## ✨ Features
 
-- **16 Strategic Parameters** - Control 100% of visual brand identity
-- **Genre Presets** - EDM/Pop, Indie Rock, Metal/Raw Rock templates
-- **Responsive Design** - Mobile-first, works on all devices
-- **Performance Optimized** - Fast loading, smooth animations
-- **Queen Claude Ready** - AI-powered configuration and customization
-- **Developer Friendly** - TypeScript, modern tooling, clear documentation
+- **Modern Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS, Framer Motion
+- **Content Management Ready**: File-based content system with clear migration path to headless CMS
+- **Multi-Band Support**: Template structure supports multiple band websites
+- **16 Strategic Parameters**: Control 100% of visual brand identity
+- **Genre Presets**: EDM/Pop, Indie Rock, Metal/Raw Rock templates
+- **Responsive Design**: Mobile-first, fully responsive across all devices
+- **Performance Optimized**: Fast loading, smooth animations, optimized images
+- **SEO Ready**: Meta tags, Open Graph, structured data support
+- **Type Safe**: Full TypeScript coverage with strict typing
+- **Developer Friendly**: Modern tooling, clear documentation
 
 ## 🚀 Quick Start
 
+### Using the Setup Script (Recommended)
+
 ```bash
-# Clone and setup
-git clone <this-repository>
-cd band-website-framework
+# Clone the repository
+git clone https://github.com/yourusername/band-website-boilerplate.git
+cd band-website-boilerplate
+
+# Install dependencies
 npm install
 
-# Configure your band
-cp band.config.sample.ts band.config.ts
-# Edit band.config.ts with your information
+# Run the interactive setup wizard
+./scripts/setup-band.sh
 
-# Add your media assets
-# - /public/hero-bg.jpg (hero background)
-# - /public/gallery/*.jpg (gallery images)
-# - /public/logo.png (your logo)
-
-# Start development
+# Start development server
 npm run dev
 ```
 
-Visit `http://localhost:3000` and see your band website come to life! 🎤
+Visit `http://localhost:3000` to see your band website! 🎤
+
+### Manual Setup
+
+1. Copy the template content:
+```bash
+cp -r content/bands/template-band content/bands/your-band-name
+```
+
+2. Update the JSON files in `content/bands/your-band-name/`:
+   - `band-profile.json` - Band name, tagline, theme
+   - `data/about.json` - Band description and story
+   - `data/social.json` - Social media links
+   - `data/contact.json` - Contact information
+   - `data/shows.json` - Tour dates
+
+3. Create `.env.local`:
+```bash
+cp .env.example .env.local
+# Update NEXT_PUBLIC_BAND_ID with your band ID
+```
+
+4. Add your media assets and start development!
+
+## 📁 Project Structure
+
+```
+├── src/
+│   ├── app/               # Next.js app directory
+│   ├── components/        # Reusable React components
+│   ├── hooks/             # Custom React hooks (useContent, useConfig)
+│   ├── lib/               # Content loader and utilities
+│   └── types/             # TypeScript type definitions
+├── content/
+│   └── bands/
+│       └── template-band/ # Template content structure
+│           ├── band-profile.json
+│           ├── assets/    # Media assets
+│           │   ├── backgrounds/
+│           │   ├── gallery/
+│           │   └── logos/
+│           └── data/      # Content data files
+├── config/                # Configuration system
+├── public/                # Static assets
+└── scripts/               # Utility scripts
+```
 
 ## 🎨 Configuration System
 
 ### Core Developer Controls (8 Parameters)
+
 The **top 20%** of parameters that drive **80%** of visual impact:
 
-1. **Primary Color Palette** - Brand colors used throughout
+1. **Primary Color Palette** - Brand colors throughout the site
 2. **Typography Pair** - Heading and body font combinations
 3. **Hero Background** - Main hero section styling
 4. **Section Background Strategy** - How each section is styled
@@ -49,168 +97,181 @@ The **top 20%** of parameters that drive **80%** of visual impact:
 8. **Border Radius Scale** - Sharp to rounded aesthetic
 
 ### Genre Flexibility (8 Parameters)
-Fine-tuning for different music genres:
 
-9. **Particle Effects Density** - Atmospheric elements intensity
-10. **Glow/Neon Intensity** - Cyberpunk-style effects
-11. **Texture Overlays** - Clean to grungy surface treatments
-12. **Motion Speed** - Animation speed scaling
-13. **Shadow Intensity** - Depth and drama of shadows
-14. **Background Focus** - Image blur effects
-15. **Color Saturation** - Vibrancy level
-16. **Layout Spacing** - Density of elements
+Fine-tuning controls for different music genres:
 
-## 🎵 Genre Presets
+- Particle Effects Density
+- Glow/Neon Intensity
+- Texture Overlays
+- Motion Speed Multiplier
+- Shadow Intensity
+- Background Focus Effect
+- Color Saturation Level
+- Layout Spacing
 
-### EDM/Pop
+## 🎨 Content Customization
+
+### Quick Customization
+
+Edit `content/bands/your-band/band-profile.json`:
+
+```json
+{
+  "id": "your-band",
+  "name": "Your Band Name",
+  "tagline": "Your Musical Journey",
+  "theme": {
+    "primaryColor": "amber-900",
+    "secondaryColor": "teal-800",
+    "accentColor": "purple-600",
+    "animationIntensity": "full"
+  }
+}
+```
+
+### Content Sections
+
+- **Hero**: Eye-catching landing with band name and tagline
+- **About**: Band story, members, achievements
+- **Shows**: Upcoming and past tour dates
+- **Gallery**: Photo gallery with lightbox
+- **Contact**: Contact info and social links
+
+## 🔌 CMS Integration
+
+Designed for easy migration to any headless CMS:
+
+### Supported Platforms
+- **Strapi**: Direct content type mapping
+- **Payload CMS**: TypeScript-native, multi-tenant ready
+- **Contentful**: API-ready structure
+- **Sanity**: Schema-compatible format
+- **Directus**: Open-source data platform
+- **Custom API**: JSON endpoints ready
+
+### Migration Path
+
+1. Content structure matches common CMS patterns
+2. TypeScript interfaces ready for API types
+3. Content loader abstraction for easy switching
+4. Environment-based content source configuration
+
 ```typescript
-// High energy, neon effects, fast motion
-import { edmPopPreset } from './band.config.sample'
+// Switch between content sources
+NEXT_PUBLIC_CONTENT_SOURCE=file  // Current: File-based
+NEXT_PUBLIC_CONTENT_SOURCE=cms   // Future: Headless CMS
+NEXT_PUBLIC_CONTENT_SOURCE=api   // Future: Custom API
 ```
 
-### Indie Rock
-```typescript
-// Warm, textured, moderate effects
-import { indieRockPreset } from './band.config.sample'
+## 📦 Media Guidelines
+
+### Images
+- **Hero Background**: 1920x1080 minimum, JPG/PNG
+- **Gallery Images**: 16:9 aspect ratio, 1200x675 minimum
+- **Logo**: PNG with transparency, 500px width minimum
+- **Favicon**: 32x32px ICO format
+
+### Videos
+- **Format**: MP4 (H.264 codec)
+- **Resolution**: 1920x1080 preferred
+- **File Size**: < 20MB for web performance
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript compiler
 ```
 
-### Metal/Raw Rock
-```typescript
-// Sharp, high contrast, dramatic
-import { metalRockPreset } from './band.config.sample'
+### Environment Variables
+
+Create `.env.local` from `.env.example`:
+
+```env
+NEXT_PUBLIC_BAND_ID=your-band
+NEXT_PUBLIC_CONTENT_SOURCE=file
+DATABASE_URL=postgresql://...
+NEXTAUTH_SECRET=your-secret
 ```
 
-## 📁 Media Assets Required
-
-```
-public/
-├── hero-bg.jpg              # Hero background (1920x1080+)
-├── logo.png                 # Main logo
-├── favicon.ico              # Site favicon
-├── gallery/
-│   ├── gallery-1.jpg        # Gallery images (1200x800)
-│   ├── gallery-2.jpg        # 3:2 aspect ratio
-│   ├── gallery-3.jpg        # Web-optimized
-│   └── gallery-4.jpg        # JPG or WebP
-└── videos/                  # Optional background videos
-    ├── about-bg-1.mp4       # About section (1920x1080, <5MB)
-    └── shows-bg-1.mp4       # Shows section (MP4, H.264)
-```
-
-## 🛠 Tech Stack
-
-- **Framework:** Next.js 15.3.5 + React 19
-- **Language:** TypeScript 5.9
-- **Styling:** Tailwind CSS v4
-- **Animations:** Framer Motion 12.23
-- **Database:** Prisma + PostgreSQL (optional)
-- **Auth:** NextAuth.js (optional)
-- **Icons:** Lucide React
-
-## 👑 Queen Claude Integration
-
-This framework is optimized for Queen Claude's AI-powered design system:
-
-- **Parameter Schema** - Machine-readable configuration
-- **Validation Rules** - Automatic conflict detection
-- **Genre Mapping** - AI-driven style suggestions
-- **Performance Boundaries** - Automated optimization
-- **Template System** - Instant genre transformations
-
-Queen Claude can analyze your band's style and automatically configure all 16 parameters for perfect brand alignment.
-
-## 📖 Documentation
-
-- **[Setup Guide](SETUP_GUIDE.md)** - Complete configuration walkthrough
-- **[Media Assets Guide](public/MEDIA_ASSETS_GUIDE.md)** - Asset specifications and tips
-- **[Parameter Schema](config/parameter-schema.json)** - Complete API reference
-- **[Configuration Examples](band.config.sample.ts)** - Real-world examples
-
-## 🎯 Use Cases
-
-### For Bands
-- Launch a professional website in under 30 minutes
-- Update content and styling without coding
-- Genre-specific optimizations for your music style
-- Mobile-first responsive design
-
-### For Developers
-- Clean, modern codebase with TypeScript
-- 16 strategic parameters control everything
-- Clear separation of content and styling
-- Easy to extend and customize
-
-### For Agencies
-- Rapid client delivery (hours not weeks)
-- Consistent quality across projects
-- Easy maintenance and updates
-- Queen Claude automation integration
-
-## 🚀 Deployment
+## 🚢 Deployment
 
 ### Vercel (Recommended)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/band-website-boilerplate)
+
+### Other Platforms
+- **Netlify**: Full Next.js support
+- **Railway**: Great for full-stack apps
+- **Render**: Docker-based deployments
+
+## 🤖 Queen Claude Integration
+
+This framework is optimized for AI-powered customization:
+
 ```bash
-npm install -g vercel
-vercel
+# Use Queen Claude to configure your site
+queen-claude configure --band "Your Band Name" --genre "rock"
+
+# Generate optimized images
+queen-claude optimize-images ./content/bands/your-band/assets/
+
+# Create content from prompts
+queen-claude generate-content --section about --style professional
 ```
 
-### Netlify
-```bash
-npm run build
-# Upload to Netlify
-```
+## 🎸 Genre Presets
 
-### Docker
-```bash
-docker build -t band-website .
-docker run -p 3000:3000 band-website
-```
+### EDM/Pop
+- High animation intensity
+- Neon glow effects
+- Fast motion speed
+- Vibrant color saturation
 
-## 📝 Examples
+### Indie Rock
+- Moderate particles
+- Subtle textures
+- Muted colors
+- Balanced spacing
 
-### Color Palette
-```typescript
-primaryColorPalette: {
-  primary: 'amber-900',      // Main brand color
-  secondary: 'teal-800',     // Accent color
-  accent: 'purple-600',      // CTA highlights
-  background: 'black',       // Base background
-  surface: 'gray-900'        // Cards/surfaces
-}
-```
-
-### Typography
-```typescript
-typographyPair: {
-  headingFont: 'Playfair Display',  // Dramatic headings
-  bodyFont: 'Source Sans Pro',      // Readable body text
-  fontScale: 'spacious'             // More breathing room
-}
-```
-
-### Genre Transformation
-```typescript
-// Transform any site from rock to EDM in seconds
-genre: {
-  particleEffectsDensity: 1.0,     // Maximum effects
-  glowIntensity: 0.8,              // Cyberpunk glow
-  motionSpeedMultiplier: 1.5,      // Fast animations
-  colorSaturation: 'neon'          // Vibrant colors
-}
-```
+### Metal/Raw Rock
+- Dramatic shadows
+- Grungy textures
+- High contrast
+- Sharp edges
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our contributing guidelines and feel free to submit issues and pull requests.
+Contributions welcome! Please read our contributing guidelines.
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - feel free to use this for any project!
 
-## 🎤 Credits
+## 🙏 Credits
 
-Built with love for the music community. Special thanks to all the bands and developers who provided feedback during development.
+Built with:
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [Framer Motion](https://www.framer.com/motion/) - Animation library
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+
+## 💬 Support
+
+- 📖 [Documentation](./content/CONTENT_STRUCTURE.md)
+- 🐛 [Report Issues](https://github.com/yourusername/band-website-boilerplate/issues)
+- 💡 [Feature Requests](https://github.com/yourusername/band-website-boilerplate/discussions)
 
 ---
 
-**Ready to rock?** 🤘 [Get started with the setup guide](SETUP_GUIDE.md) and have your band website live in minutes!
+**Ready to rock?** 🎸 Clone this repo and build your band's online presence in minutes!
