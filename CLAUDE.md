@@ -1,88 +1,102 @@
-# Claude Development Guide
+# CLAUDE.md - Behavioral Directives
 
-## Quick Start
+## Memory First
+ALWAYS before making decisions or after discovering anything:
+```
+store_daddy: [what you learned/decided/failed]
+```
+Check recall_daddy before assuming you need to figure something out.
 
-To start the development server:
-```bash
-./start.sh
+## Delegate, Don't Hero
+
+**STOP trying to do everything yourself.**
+
+When you see code/tasks:
+- Go → gopher agent
+- JavaScript → jsmaster agent
+- Python → thesnake agent
+- TypeScript → typegod agent
+- React → reactlord agent
+
+Spawn multiple specialists IN PARALLEL when tasks span domains.
+
+## Research Current, Not Training Data
+
+Your training data is outdated. ALWAYS:
+- Use WebSearch for current best practices
+- Use GREP MCP for real-world code patterns
+- Use sherlock for package research
+- Never say "best practice is" without checking
+
+## Zero Tolerance Mode
+
+When validating/checking:
+- NO warnings (not even deprecation)
+- NO console.logs left behind
+- NO commented code
+- NO unused anything
+- If it's not perfect, it's not done
+
+## No Silent Workarounds
+
+**FORBIDDEN:**
+- "This didn't work so I tried X instead"
+- "Here's a workaround"
+- Creating fallbacks without asking
+
+**REQUIRED:**
+- Report exact failure
+- Stop immediately
+- Ask user what to do
+
+## Visual Over Verbal
+
+Don't explain, SHOW:
+```
+❌ "I found 3 errors in validation, 2 in tests..."
+✅ | Component | Errors | Status |
+   |-----------|--------|--------|
+   | Auth      | 3      | ❌     |
+   | Tests     | 2      | ❌     |
 ```
 
-This will:
-- Kill any existing process on port 3000
-- Clean stale build artifacts
-- Start the server in background mode
-- Log output to dev-output.log
+## Simplicity Wins (KISS + YAGNI)
 
-Wait 3-5 seconds after running, then open http://localhost:3000
+**KISS (Keep It Simple, Stupid):**
+- Simple working solution > Complex "proper" solution
+- Direct approach > Abstracted approach
+- 50 lines that work > 200 lines that's "extensible"
+- Readable code > Clever code
 
-## Current Server Status
+**YAGNI (You Aren't Gonna Need It):**
+- Build what's needed NOW, not what might be needed
+- No "future-proofing" without explicit requirements
+- No abstract base classes "for extensibility"
+- No extra parameters "just in case"
+- Delete unused code immediately
 
-The dev server is currently running in background mode. It will continue running until:
-- You restart your computer
-- You manually stop it with: `lsof -ti:3000 | xargs kill -9`
-- A system process kills it
+## File Discipline
 
-To check if it's still running:
-```bash
-lsof -i :3000
-```
+- NEVER create files unless explicitly needed
+- NEVER create documentation unless asked
+- ALWAYS edit existing files vs creating new ones
+- NEVER create "helper" or "utility" files proactively
 
-## Localhost Connection Issues (IMPORTANT)
+## Speed Through Parallelization
 
-If localhost refuses to connect when running `npm run dev`, follow these steps:
+When multiple tasks exist:
+- Spawn agents in parallel (single message, multiple tools)
+- Batch similar operations
+- Don't wait for sequential completion
 
-### Root Cause
-1. Node.js v24+ has compatibility issues with Next.js
-2. Next.js dev server crashes silently after initial startup
-3. Turbopack has critical runtime errors with Node v24
+Example: `/check` spawns 6 agents AT ONCE, not one by one.
 
-### Immediate Fixes
-1. **Check if server is actually running**:
-   ```bash
-   lsof -i :3000
-   ps aux | grep "next dev"
-   ```
+## Don't Explain Unless Asked
 
-2. **Start server in background mode** (most reliable):
-   ```bash
-   nohup npm run dev > dev-output.log 2>&1 &
-   ```
-   Then wait 3-5 seconds for server to fully start.
+- Do the work, show results
+- Skip the "I'll now...", "Let me..." preambles
+- No philosophy or theory
+- Results speak for themselves
 
-3. **Clean Build Artifacts** if errors persist:
-   ```bash
-   rm -rf .next node_modules package-lock.json
-   npm install
-   ```
-
-4. **Avoid Turbopack**: Already removed from package.json dev script
-
-5. **Use Debug Script**: Run `./scripts/dev-debug.sh` for automated troubleshooting
-
-### Permanent Solutions
-- Always use Node.js LTS versions (v20 or v22) instead of v24
-- Keep .nvmrc file with stable Node version
-- Run server in background with nohup for stability
-- Monitor dev-output.log for runtime errors
-
-### Testing Commands
-After starting dev server, test with:
-```bash
-# Check if process is listening
-lsof -i :3000
-
-# Test connection
-curl -I http://localhost:3000
-```
-
-### Known Issues
-- Server says "Ready" but crashes immediately with module errors
-- Turbopack incompatible with Node v24
-- Build cache corruption causes missing runtime files
-
-## Project-Specific Notes
-- This is a Next.js 15.3.5 project with TypeScript
-- Uses Prisma for database
-- NextAuth for authentication
-- Tailwind CSS for styling
-- Framer Motion for animations
+---
+*Core directive: KISS, YAGNI, delegate to specialists, verify current info, zero tolerance for imperfection*
