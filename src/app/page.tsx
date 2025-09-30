@@ -5,9 +5,10 @@ import { ChevronDown, Facebook, X, ChevronLeft, ChevronRight } from 'lucide-reac
 import Image from 'next/image'
 import { useState } from 'react'
 import VideoBackground from '@/components/VideoBackground'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useBandContent, useMediaPaths, useConfiguredClasses, useAnimationClasses, useAnimationSettings } from '@/hooks/useConfig'
 
-export default function Home() {
+function HomeContent() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
@@ -663,5 +664,13 @@ export default function Home() {
         )}
       </AnimatePresence>
     </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <ErrorBoundary>
+      <HomeContent />
+    </ErrorBoundary>
   )
 }

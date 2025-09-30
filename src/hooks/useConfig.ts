@@ -54,14 +54,47 @@ export function useConfig() {
  * Hook for band content (name, tagline, descriptions, etc.)
  */
 export function useBandContent() {
-  const content = getBandContent()
+  try {
+    const content = getBandContent()
 
-  return {
-    bandName: content.bandName,
-    tagline: content.tagline,
-    description: content.description,
-    social: content.social,
-    contact: content.contact
+    if (!content) {
+      return {
+        bandName: 'Your Band Name',
+        tagline: 'Your Musical Journey',
+        description: {
+          short: 'A band that creates unforgettable music',
+          medium: 'We create music that connects hearts and moves souls.',
+          long: 'Our music is a journey through emotions, bringing people together through the universal language of sound.'
+        },
+        social: {},
+        contact: { email: '' }
+      }
+    }
+
+    return {
+      bandName: content.bandName || 'Your Band Name',
+      tagline: content.tagline || 'Your Musical Journey',
+      description: content.description || {
+        short: 'A band that creates unforgettable music',
+        medium: 'We create music that connects hearts and moves souls.',
+        long: 'Our music is a journey through emotions, bringing people together through the universal language of sound.'
+      },
+      social: content.social || {},
+      contact: content.contact || { email: '' }
+    }
+  } catch (error) {
+    console.error('Error loading band content:', error)
+    return {
+      bandName: 'Your Band Name',
+      tagline: 'Your Musical Journey',
+      description: {
+        short: 'A band that creates unforgettable music',
+        medium: 'We create music that connects hearts and moves souls.',
+        long: 'Our music is a journey through emotions, bringing people together through the universal language of sound.'
+      },
+      social: {},
+      contact: { email: '' }
+    }
   }
 }
 
@@ -69,7 +102,50 @@ export function useBandContent() {
  * Hook for media paths and assets
  */
 export function useMediaPaths() {
-  return getMediaPaths()
+  try {
+    const media = getMediaPaths()
+
+    if (!media) {
+      return {
+        hero: {
+          background: '/hero-bg.jpg',
+          fallback: '/hero-bg.jpg'
+        },
+        sections: {
+          about: ['/videos/about-bg-1.mp4'],
+          shows: ['/videos/shows-bg-1.mp4'],
+          gallery: [],
+          contact: []
+        },
+        gallery: [],
+        logos: {
+          main: '/logo.png',
+          icon: '/favicon.ico'
+        }
+      }
+    }
+
+    return media
+  } catch (error) {
+    console.error('Error loading media paths:', error)
+    return {
+      hero: {
+        background: '/hero-bg.jpg',
+        fallback: '/hero-bg.jpg'
+      },
+      sections: {
+        about: ['/videos/about-bg-1.mp4'],
+        shows: ['/videos/shows-bg-1.mp4'],
+        gallery: [],
+        contact: []
+      },
+      gallery: [],
+      logos: {
+        main: '/logo.png',
+        icon: '/favicon.ico'
+      }
+    }
+  }
 }
 
 // ================================
@@ -80,14 +156,98 @@ export function useMediaPaths() {
  * Hook for configured Tailwind classes
  */
 export function useConfiguredClasses() {
-  return getConfiguredClasses()
+  try {
+    const classes = getConfiguredClasses()
+
+    if (!classes) {
+      return {
+        primary: {
+          bg: 'bg-amber-900',
+          text: 'text-amber-900',
+          border: 'border-amber-900',
+          hover: 'hover:bg-amber-900'
+        },
+        secondary: {
+          bg: 'bg-teal-800',
+          text: 'text-teal-800',
+          border: 'border-teal-800',
+          hover: 'hover:bg-teal-800'
+        },
+        accent: {
+          bg: 'bg-purple-600',
+          text: 'text-purple-600',
+          border: 'border-purple-600',
+          hover: 'hover:bg-purple-600'
+        },
+        typography: {
+          heading: 'font-inter',
+          body: 'font-inter'
+        },
+        rounded: {
+          default: 'rounded-sm',
+          button: 'rounded-lg'
+        }
+      }
+    }
+
+    return classes
+  } catch (error) {
+    console.error('Error loading configured classes:', error)
+    return {
+      primary: {
+        bg: 'bg-amber-900',
+        text: 'text-amber-900',
+        border: 'border-amber-900',
+        hover: 'hover:bg-amber-900'
+      },
+      secondary: {
+        bg: 'bg-teal-800',
+        text: 'text-teal-800',
+        border: 'border-teal-800',
+        hover: 'hover:bg-teal-800'
+      },
+      accent: {
+        bg: 'bg-purple-600',
+        text: 'text-purple-600',
+        border: 'border-purple-600',
+        hover: 'hover:bg-purple-600'
+      },
+      typography: {
+        heading: 'font-inter',
+        body: 'font-inter'
+      },
+      rounded: {
+        default: 'rounded-sm',
+        button: 'rounded-lg'
+      }
+    }
+  }
 }
 
 /**
  * Hook for animation classes based on configuration
  */
 export function useAnimationClasses() {
-  return getAnimationClasses()
+  try {
+    const classes = getAnimationClasses()
+
+    if (!classes) {
+      return {
+        transition: 'transition-all duration-500',
+        hover: 'hover:scale-110 hover:shadow-lg',
+        entrance: 'animate-slide-up'
+      }
+    }
+
+    return classes
+  } catch (error) {
+    console.error('Error loading animation classes:', error)
+    return {
+      transition: 'transition-all duration-500',
+      hover: 'hover:scale-110 hover:shadow-lg',
+      entrance: 'animate-slide-up'
+    }
+  }
 }
 
 /**
@@ -121,12 +281,32 @@ export function useTypography() {
  * Hook for animation settings
  */
 export function useAnimationSettings() {
-  const config = getConfig()
-  return {
-    intensity: config.core.animationIntensity,
-    speedMultiplier: config.genre.motionSpeedMultiplier,
-    particleDensity: config.genre.particleEffectsDensity,
-    glowIntensity: config.genre.glowIntensity
+  try {
+    const config = getConfig()
+
+    if (!config) {
+      return {
+        intensity: 'moderate' as const,
+        speedMultiplier: 1.0,
+        particleDensity: 0.5,
+        glowIntensity: 0.3
+      }
+    }
+
+    return {
+      intensity: config.core?.animationIntensity || 'moderate',
+      speedMultiplier: config.genre?.motionSpeedMultiplier || 1.0,
+      particleDensity: config.genre?.particleEffectsDensity || 0.5,
+      glowIntensity: config.genre?.glowIntensity || 0.3
+    }
+  } catch (error) {
+    console.error('Error loading animation settings:', error)
+    return {
+      intensity: 'moderate' as const,
+      speedMultiplier: 1.0,
+      particleDensity: 0.5,
+      glowIntensity: 0.3
+    }
   }
 }
 

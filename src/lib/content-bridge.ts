@@ -11,9 +11,33 @@ import type { BandWebsiteConfig } from '../../config/band.config'
 import type { BandContent } from '@/types/content'
 
 /**
+ * Check if CMS mode is enabled via environment variable
+ */
+function isCMSEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_USE_CMS === 'true' ||
+         process.env.NODE_ENV === 'development' // Enable CMS by default in development
+}
+
+/**
  * Check if new content system has data
  */
 async function hasNewContent(bandId: string = 'template-band'): Promise<boolean> {
+  // If CMS is enabled, try CMS first
+  if (isCMSEnabled()) {
+    try {
+      const content = await loadBandContent(bandId, 'cms')
+      return Boolean(content)
+    } catch {
+      // Fall back to checking file system
+      try {
+        return await contentExists(bandId)
+      } catch {
+        return false
+      }
+    }
+  }
+
+  // Default behavior - check file system
   try {
     return await contentExists(bandId)
   } catch {
@@ -98,17 +122,19 @@ function contentToConfig(content: BandContent): Partial<BandWebsiteConfig> {
 }
 
 /**
- * Get unified content (tries new system first, falls back to old)
+ * Get unified content (tries CMS/new system first, falls back to old)
  */
-export async function getUnifiedContent(): Promise<{
-  source: 'new' | 'old'
+export async function getUnifiedContent(bandId: string = 'template-band'): Promise<{
+  source: 'cms' | 'new' | 'old'
   config: BandWebsiteConfig
 }> {
-  const hasNew = await hasNewContent()
+  const hasNew = await hasNewContent(bandId)
 
   if (hasNew) {
     try {
-      const content = await loadBandContent()
+      // Use CMS if enabled, otherwise file system
+      const contentSource = isCMSEnabled() ? 'cms' : 'file'
+      const content = await loadBandContent(bandId, contentSource)
       const oldConfig = getConfig()
       const convertedConfig = contentToConfig(content)
 
@@ -136,7 +162,7 @@ export async function getUnifiedContent(): Promise<{
         }
       } as BandWebsiteConfig
 
-      return { source: 'new', config: mergedConfig }
+      return { source: isCMSEnabled() ? 'cms' : 'new', config: mergedConfig }
     } catch (error) {
       console.warn('Failed to load new content, falling back to old config:', error)
     }
@@ -157,16 +183,17 @@ export async function getBandName(): Promise<string> {
 /**
  * Get media paths from either system
  */
-export async function getMediaPaths(): Promise<{
+export async function getMediaPaths(bandId: string = 'template-band'): Promise<{
   hero: string
   gallery: string[]
   about?: string[]
   shows?: string[]
 }> {
-  const hasNew = await hasNewContent()
+  const hasNew = await hasNewContent(bandId)
 
   if (hasNew) {
-    const content = await loadBandContent()
+    const contentSource = isCMSEnabled() ? 'cms' : 'file'
+    const content = await loadBandContent(bandId, contentSource)
     const basePath = `/content/bands/${content.profile.id}/assets`
 
     return {
