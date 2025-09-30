@@ -5,9 +5,10 @@ import { ChevronDown, Facebook, X, ChevronLeft, ChevronRight } from 'lucide-reac
 import Image from 'next/image'
 import { useState } from 'react'
 import VideoBackground from '@/components/VideoBackground'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useBandContent, useMediaPaths, useConfiguredClasses, useAnimationClasses, useAnimationSettings } from '@/hooks/useConfig'
 
-export default function Home() {
+function HomeContent() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
@@ -447,32 +448,39 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-gray-950/30 via-transparent to-slate-950/40"></div>
 
         {/* Enhanced atmospheric particles */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={`particle-gallery-${i}`}
-            className="absolute rounded-full"
-            style={{
-              width: `${2 + Math.random() * 2}px`,
-              height: `${2 + Math.random() * 2}px`,
-              left: `${10 + i * 7}%`,
-              bottom: '8%',
-              background: `radial-gradient(circle, rgba(200, 200, 200, 0.8) 0%, rgba(150, 150, 150, 0.4) 40%, transparent 70%)`,
-              boxShadow: '0 0 6px rgba(200, 200, 200, 0.6), 0 0 12px rgba(150, 150, 150, 0.3)',
-            }}
-            animate={{
-              y: [0, -700 - Math.random() * 200],
-              x: [0, Math.sin(i + 1) * 60],
-              opacity: [0, 0.8, 0.5, 0],
-              scale: [0.5, 1.2, 0.8],
-            }}
-            transition={{
-              duration: 20 + i * 3,
-              ease: "easeOut",
-              repeat: Infinity,
-              delay: i * 1.8,
-            }}
-          />
-        ))}
+        {[...Array(12)].map((_, i) => {
+          // Deterministic values based on index to prevent hydration mismatch
+          const seedWidth = 2 + ((i * 7 + 3) % 100) / 50; // Creates values between 2-4
+          const seedHeight = 2 + ((i * 11 + 7) % 100) / 50; // Creates values between 2-4
+          const seedY = -700 - ((i * 13 + 5) % 200); // Creates values between -700 to -900
+
+          return (
+            <motion.div
+              key={`particle-gallery-${i}`}
+              className="absolute rounded-full"
+              style={{
+                width: `${seedWidth}px`,
+                height: `${seedHeight}px`,
+                left: `${10 + i * 7}%`,
+                bottom: '8%',
+                background: `radial-gradient(circle, rgba(200, 200, 200, 0.8) 0%, rgba(150, 150, 150, 0.4) 40%, transparent 70%)`,
+                boxShadow: '0 0 6px rgba(200, 200, 200, 0.6), 0 0 12px rgba(150, 150, 150, 0.3)',
+              }}
+              animate={{
+                y: [0, seedY],
+                x: [0, Math.sin(i + 1) * 60],
+                opacity: [0, 0.8, 0.5, 0],
+                scale: [0.5, 1.2, 0.8],
+              }}
+              transition={{
+                duration: 20 + i * 3,
+                ease: "easeOut",
+                repeat: Infinity,
+                delay: i * 1.8,
+              }}
+            />
+          );
+        })}
 
         <div className="relative z-10 py-8 flex flex-col h-full justify-center">
           <motion.div
@@ -663,5 +671,13 @@ export default function Home() {
         )}
       </AnimatePresence>
     </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <ErrorBoundary>
+      <HomeContent />
+    </ErrorBoundary>
   )
 }

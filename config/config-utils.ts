@@ -23,24 +23,35 @@ let currentConfig: BandWebsiteConfig = defaultConfig
  * Load configuration from various sources
  */
 export function loadConfig(configOverride?: Partial<BandWebsiteConfig>): BandWebsiteConfig {
-  // Merge with defaults
-  currentConfig = {
-    ...defaultConfig,
-    ...configOverride,
-    core: { ...defaultConfig.core, ...configOverride?.core },
-    genre: { ...defaultConfig.genre, ...configOverride?.genre },
-    content: { ...defaultConfig.content, ...configOverride?.content },
-    media: { ...defaultConfig.media, ...configOverride?.media }
-  }
+  try {
+    // Merge with defaults
+    currentConfig = {
+      ...defaultConfig,
+      ...configOverride,
+      core: { ...defaultConfig.core, ...configOverride?.core },
+      genre: { ...defaultConfig.genre, ...configOverride?.genre },
+      content: { ...defaultConfig.content, ...configOverride?.content },
+      media: { ...defaultConfig.media, ...configOverride?.media }
+    }
 
-  return currentConfig
+    return currentConfig
+  } catch (error) {
+    console.error('Error loading config:', error)
+    currentConfig = defaultConfig
+    return defaultConfig
+  }
 }
 
 /**
  * Get current configuration
  */
 export function getConfig(): BandWebsiteConfig {
-  return currentConfig
+  try {
+    return currentConfig || defaultConfig
+  } catch (error) {
+    console.error('Error getting config:', error)
+    return defaultConfig
+  }
 }
 
 /**
@@ -230,21 +241,50 @@ export function getAnimationClasses() {
  * Get band content with fallbacks
  */
 export function getBandContent() {
-  const config = getConfig()
+  try {
+    const config = getConfig()
 
-  return {
-    bandName: config.content.bandName !== '[BAND_NAME]' ? config.content.bandName : 'Your Band Name',
-    tagline: config.content.tagline !== '[BAND_TAGLINE]' ? config.content.tagline : 'Your Musical Journey',
-    description: {
-      short: config.content.description.short !== '[SHORT_DESCRIPTION]' ?
-             config.content.description.short : 'A band that creates unforgettable music',
-      medium: config.content.description.medium !== '[MEDIUM_DESCRIPTION]' ?
-              config.content.description.medium : 'We create music that connects hearts and moves souls.',
-      long: config.content.description.long !== '[LONG_DESCRIPTION]' ?
-            config.content.description.long : 'Our music is a journey through emotions, bringing people together through the universal language of sound.'
-    },
-    social: config.content.social,
-    contact: config.content.contact
+    if (!config || !config.content) {
+      return {
+        bandName: 'Your Band Name',
+        tagline: 'Your Musical Journey',
+        description: {
+          short: 'A band that creates unforgettable music',
+          medium: 'We create music that connects hearts and moves souls.',
+          long: 'Our music is a journey through emotions, bringing people together through the universal language of sound.'
+        },
+        social: {},
+        contact: { email: '' }
+      }
+    }
+
+    return {
+      bandName: config.content.bandName !== '[BAND_NAME]' ? config.content.bandName : 'Your Band Name',
+      tagline: config.content.tagline !== '[BAND_TAGLINE]' ? config.content.tagline : 'Your Musical Journey',
+      description: {
+        short: config.content.description?.short !== '[SHORT_DESCRIPTION]' ?
+               config.content.description?.short : 'A band that creates unforgettable music',
+        medium: config.content.description?.medium !== '[MEDIUM_DESCRIPTION]' ?
+                config.content.description?.medium : 'We create music that connects hearts and moves souls.',
+        long: config.content.description?.long !== '[LONG_DESCRIPTION]' ?
+              config.content.description?.long : 'Our music is a journey through emotions, bringing people together through the universal language of sound.'
+      },
+      social: config.content.social || {},
+      contact: config.content.contact || { email: '' }
+    }
+  } catch (error) {
+    console.error('Error getting band content:', error)
+    return {
+      bandName: 'Your Band Name',
+      tagline: 'Your Musical Journey',
+      description: {
+        short: 'A band that creates unforgettable music',
+        medium: 'We create music that connects hearts and moves souls.',
+        long: 'Our music is a journey through emotions, bringing people together through the universal language of sound.'
+      },
+      social: {},
+      contact: { email: '' }
+    }
   }
 }
 
@@ -252,16 +292,65 @@ export function getBandContent() {
  * Get media paths with fallbacks
  */
 export function getMediaPaths() {
-  const config = getConfig()
+  try {
+    const config = getConfig()
 
-  return {
-    hero: {
-      background: config.media.hero.background,
-      fallback: config.media.hero.fallbackImage
-    },
-    sections: config.media.sections,
-    gallery: config.media.gallery.images.map(img => `/gallery/${img}`),
-    logos: config.media.logos
+    if (!config || !config.media) {
+      return {
+        hero: {
+          background: '/hero-bg.jpg',
+          fallback: '/hero-bg.jpg'
+        },
+        sections: {
+          about: ['/videos/about-bg-1.mp4'],
+          shows: ['/videos/shows-bg-1.mp4'],
+          gallery: [],
+          contact: []
+        },
+        gallery: [],
+        logos: {
+          main: '/logo.png',
+          icon: '/favicon.ico'
+        }
+      }
+    }
+
+    return {
+      hero: {
+        background: config.media.hero?.background || '/hero-bg.jpg',
+        fallback: config.media.hero?.fallbackImage || '/hero-bg.jpg'
+      },
+      sections: config.media.sections || {
+        about: ['/videos/about-bg-1.mp4'],
+        shows: ['/videos/shows-bg-1.mp4'],
+        gallery: [],
+        contact: []
+      },
+      gallery: config.media.gallery?.images?.map(img => `/gallery/${img}`) || [],
+      logos: config.media.logos || {
+        main: '/logo.png',
+        icon: '/favicon.ico'
+      }
+    }
+  } catch (error) {
+    console.error('Error getting media paths:', error)
+    return {
+      hero: {
+        background: '/hero-bg.jpg',
+        fallback: '/hero-bg.jpg'
+      },
+      sections: {
+        about: ['/videos/about-bg-1.mp4'],
+        shows: ['/videos/shows-bg-1.mp4'],
+        gallery: [],
+        contact: []
+      },
+      gallery: [],
+      logos: {
+        main: '/logo.png',
+        icon: '/favicon.ico'
+      }
+    }
   }
 }
 

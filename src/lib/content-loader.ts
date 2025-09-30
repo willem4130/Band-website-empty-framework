@@ -31,9 +31,15 @@ export class ContentLoader {
   private readonly cache: Map<string, unknown> = new Map()
 
   constructor(config?: Partial<ContentConfig>) {
+    // Use environment variables for default configuration
+    const defaultSource = process.env.NEXT_PUBLIC_USE_CMS === 'true' ? 'cms' : 'file'
+    const defaultBandId = process.env.NEXT_PUBLIC_BAND_ID || DEFAULT_BAND_ID
+    const defaultApiUrl = process.env.NEXT_PUBLIC_CMS_API_URL || 'http://localhost:3002/api'
+
     this.config = {
-      source: 'file',
-      bandId: DEFAULT_BAND_ID,
+      source: defaultSource,
+      bandId: defaultBandId,
+      apiUrl: defaultApiUrl,
       fallbackToFile: true,
       ...config
     }
@@ -113,15 +119,30 @@ export class ContentLoader {
   }
 
   /**
-   * Load content from CMS (placeholder for future implementation)
+   * Load content from CMS (Payload CMS integration)
    */
   private async loadFromCMS(bandId: string): Promise<BandContent> {
-    // This will be implemented when CMS is integrated
-    // For now, fallback to file system
-    if (this.config.fallbackToFile) {
-      return this.loadFromFiles(bandId)
+    const cmsUrl = this.config.apiUrl || 'http://localhost:3002/api'
+
+    try {
+      const response = await fetch(`${cmsUrl}/bands/${bandId}`)
+      if (!response.ok) {
+        throw new Error(`CMS request failed: ${response.statusText}`)
+      }
+
+      const bandContent = await response.json()
+
+      // Cache the result
+      this.cache.set(`cms-${bandId}`, bandContent)
+
+      return bandContent
+    } catch (error) {
+      if (this.config.fallbackToFile) {
+        console.warn('CMS failed, falling back to file system:', error)
+        return this.loadFromFiles(bandId)
+      }
+      throw error
     }
-    throw new Error('CMS integration not yet implemented')
   }
 
   /**
